@@ -1,13 +1,14 @@
-const pool = require("../config/db.config");
+// In-memory storage for extracted ID data
+const idDataList = [];
 
 const saveIdData = async (data) => {
-  const query = `
-    INSERT INTO id_data (full_name, dob, id_number, raw_text)
-    VALUES ($1, $2, $3, $4) RETURNING *;
-  `;
-  const values = [data.full_name, data.dob, data.id_number, data.raw_text];
-  const result = await pool.query(query, values);
-  return result.rows[0];
+  const entry = { id: Date.now(), ...data };
+  idDataList.unshift(entry); // Add newest first
+  return entry;
 };
 
-module.exports = { saveIdData };
+const getAllIdData = async () => {
+  return idDataList;
+};
+
+module.exports = { saveIdData, getAllIdData };
