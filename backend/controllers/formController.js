@@ -1,17 +1,28 @@
-const { saveIdData } = require("../models/idmodel");
+const { saveIdData, getAllIdData } = require("../models/idmodel");
 const tesseract = require("tesseract.js");
 const fs = require("fs");
+const pdfParse = require("pdf-parse");
 
 const uploadIdProof = async (req, res) => {
+  let filePath = null;
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-    const filePath = req.file.path;
+    console.log("Uploaded file type:", req.file.mimetype); // Add this line
 
-    // Extract text using OCR
-    const { data: { text } } = await tesseract.recognize(filePath, "eng");
+    filePath = req.file.path;
+    let text = "";
 
-    // Simulated parsed data (use regex to parse from text)
+    if (req.file.mimetype === "application/pdf") {
+      const dataBuffer = fs.readFileSync(filePath);
+      const pdfData = await pdfParse(dataBuffer);
+      text = pdfData.text;
+    } else {
+      const result = await tesseract.recognize(filePath, "eng");
+      text = result.data.text;
+    }
+
+    // Simulated parsed data (replace with actual parsing logic)
     const parsedData = {
       full_name: "John Doe",
       dob: "1990-01-01",
@@ -21,12 +32,24 @@ const uploadIdProof = async (req, res) => {
 
     const savedData = await saveIdData(parsedData);
 
-    fs.unlinkSync(filePath); // delete temp file
-
     res.json({ message: "ID proof processed", data: savedData });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    // Always remove the uploaded file
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+  }
+};
+
+const getIdData = async (req, res) => {
+  try {
+    const data = await getAllIdData();
+    res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-module.exports = { uploadIdProof };
+module.exports = { uploadIdProof, getIdData };
