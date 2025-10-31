@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import UploadForm from "./UploadForm";
-import IdDataList from "./IdDataList";
 import "./App.css";
 
 function App() {
-  const [refresh, setRefresh] = useState(false);
   const [extracted, setExtracted] = useState(null);
 
   return (
-    <div className="container">
-      <h1>ID Data Extractor</h1>
+    <div className="container"
+    style={{ textAlign: "center" ,
+      backgroundColor: "#89d9f6ff",
+    }}><br/>
+      <h1>Fill the data by uploading a file</h1>
       <UploadForm
         onUploadSuccess={data => {
           setExtracted(data);
-          setRefresh(r => !r);
         }}
         extracted={extracted}
       />
-      <IdDataList key={refresh} />
     </div>
   );
 }

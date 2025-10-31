@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseurl } from "./utils";
+import "./users/UploadForm.css"; // <-- add this import
 
 function UploadForm({ onUploadSuccess, extracted }) {
   const [file, setFile] = useState(null);
@@ -52,58 +53,97 @@ function UploadForm({ onUploadSuccess, extracted }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="upload-form" onSubmit={handleSubmit}>
       <input
         type="file"
         accept="image/*,application/pdf"
         onChange={handleChange}
       />
-      <button type="submit">Upload & Extract</button>
+      <br /><button type="submit">Upload & Extract</button><br />
       <div>{message}</div>
       <div style={{ marginTop: 16 }}>
         <label>
-          Full Name:
+          Full Name:<br />
           <input
             type="text"
             name="full_name"
             value={fields.full_name}
             onChange={handleFieldChange}
             autoComplete="off"
+            style={{ backgroundColor: "#f4f4f4ff", fontWeight: "bold" }}
           />
         </label>
         <br />
         <label>
-          Date of Birth:
+          Date of Birth:<br />
           <input
             type="text"
             name="dob"
             value={fields.dob}
             onChange={handleFieldChange}
             autoComplete="off"
+            style={{ backgroundColor: "#f4f4f4ff", fontWeight: "bold" }}
           />
         </label>
         <br />
         <label>
-          ID Number:
+          Phone Number:<br />
           <input
             type="text"
-            name="id_number"
-            value={fields.id_number}
+            name="phone_number"
+            value={fields.phone_number}
             onChange={handleFieldChange}
             autoComplete="off"
+            style={{ backgroundColor: "#f4f4f4ff", fontWeight: "bold" }}
           />
         </label>
         <br />
         <label>
-          Raw Text:
-          <textarea
-            name="raw_text"
-            value={fields.raw_text}
+          Father name:<br />
+          <input
+            type="text"
+            name="father_name"
+            value={fields.father_name}
             onChange={handleFieldChange}
-            rows={4}
-            style={{ width: "100%" }}
+            autoComplete="off"
+            style={{ backgroundColor: "#f4f4f4ff", fontWeight: "bold" }}
+          />
+        </label><br/>
+        <label>
+          Mother name:<br />
+          <input
+            type="text"
+            name="mother_name"
+            value={fields.mother_name}
+            onChange={handleFieldChange}
+            autoComplete="off"
+            style={{ backgroundColor: "#f4f4f4ff", fontWeight: "bold" }}
+          /><br/>
+          </label>
+        <label>
+          present address:<br />
+          <input
+            type="text"
+            name="present_address"
+            value={fields.present_address}
+            onChange={handleFieldChange}
+            autoComplete="off"
+            style={{ backgroundColor: "#f4f4f4ff", fontWeight: "bold" }}
           />
         </label>
+        <br/>
+        <label>
+          permanent address:<br />
+          <input
+            type="text"
+            name="permanent_address"
+            value={fields.permanent_address}
+            onChange={handleFieldChange}
+            autoComplete="off"
+            style={{ backgroundColor: "#f4f4f4ff", fontWeight: "bold" }}
+          />
+        </label>
+        <button type="submit" >Submit</button>
       </div>
     </form>
   );

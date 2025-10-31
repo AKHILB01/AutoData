@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseurl } from "./utils";
 
@@ -10,25 +10,9 @@ function IdDataList() {
       .then(res => setData(res.data))
       .catch(() => setData([]));
   }, []);
-
-  return (
-    <div>
-      <h2>Extracted ID Data</h2>
-      <ul>
-        {data.map(item => (
-          <li key={item.id}>
-            <strong>Name:</strong> {item.full_name} <br />
-            <strong>DOB:</strong> {item.dob} <br />
-            <strong>ID Number:</strong> {item.id_number} <br />
-            <details>
-              <summary>Raw Text</summary>
-              <pre>{item.raw_text}</pre>
-            </details>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  // render or return null if you deleted this component from App
 }
 
-export default IdDataList;
+export default function IdDataList() {
+  return null; // no UI — keeps file present without warnings
+}
